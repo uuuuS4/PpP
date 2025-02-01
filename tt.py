@@ -133,6 +133,20 @@ def handle_bgmi(message):
 def get_image_hash(image_data):
     image = Image.open(image_data)
     return imagehash.average_hash(image)
+    
+def execute_attack():
+    try:
+        bot.edit_message_reply_markup(chat_id=message.chat.id, message_id=start_message.message_id, reply_markup=markup)
+    except telebot.apihelper.ApiTelegramException as e:
+        if e.result_json.get('error_code') == 429:
+            retry_after = int(e.result_json.get('parameters', {}).get('retry_after', 10))
+            print(f"Rate limit hit. Retrying after {retry_after} seconds.")
+            time.sleep(retry_after)
+            execute_attack()  # Retry after the delay
+        else:
+            print(f"An error occurred: {e}")
+
+execute_attack()
 
 import imagehash
 from PIL import Image
